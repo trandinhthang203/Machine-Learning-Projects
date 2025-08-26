@@ -14,6 +14,27 @@ class hash_table:
         
         total += roman[s[-1]]
         return total
+    
+    def intToRoman(self, num):
+        """
+        :type num: int
+        :rtype: str
+        """
+        roman_map = {
+            1000: "M", 900: "CM", 500: "D", 400: "CD", 
+            100: "C", 90: "XC", 50: "L", 40: "XL", 
+            10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
+        }
+        key = list(roman_map.keys())
+        result = ''
+
+        for i in key:
+            while num >= i:
+                num -= i
+                result += roman_map[i]
+                print(result)
+
+        return result
 
 h = hash_table()
-print(h.romanToInt('MCMXCIV'))
+print(h.intToRoman(3749))

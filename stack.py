@@ -9,7 +9,8 @@ class Solution(object):
             else:  
                 if not stack or mapping[stack[-1]] != i:
                     return False
-                stack.pop()
+                else:
+                    stack.pop()
 
         return not stack
 

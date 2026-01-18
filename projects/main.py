@@ -9,7 +9,11 @@ app = FastAPI()
 @app.get("/")
 def check_health():
     try:
-        a = 1 / 0
+        logging.info('Health check OK')
+        return {
+            'status': "OK",
+            "code" : 200
+        }
     except Exception as e:
         logging.info("Division by zero")
         raise CustomException(e, sys)

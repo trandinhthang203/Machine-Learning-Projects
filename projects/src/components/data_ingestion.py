@@ -38,6 +38,3 @@ class DataIngestion:
         except Exception as e:
             raise CustomException(e, sys)
         
-if __name__ == "__main__":
-    instance = DataIngestion()
-    instance.init_data_ingestion()

@@ -1,5 +1,5 @@
-from projects.src.constants.constant import *
-from utils.common import read_yaml, create_dir
+from src.constants.constant import *
+from src.utils.common import read_yaml, create_dir
 from src.entity.config_entity import DataIngestionConfig, DataValidationConfig
 
 

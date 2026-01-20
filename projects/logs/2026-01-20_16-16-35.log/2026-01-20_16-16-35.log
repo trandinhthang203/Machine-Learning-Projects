@@ -1,0 +1,5 @@
+[2026-01-20 16:16:36,176] INFO - Created directoriy at artifacts
+[2026-01-20 16:16:36,176] INFO - Created directoriy at artifacts/data_ingestion
+[2026-01-20 16:16:36,176] INFO - Data ingestion starting...
+[2026-01-20 16:16:36,176] INFO - artifacts/data_ingestion/data.zip already exist.
+[2026-01-20 16:16:36,176] INFO - Downloaded file is CSV, skipping unzip step.

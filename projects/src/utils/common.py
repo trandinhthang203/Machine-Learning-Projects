@@ -18,5 +18,3 @@ def create_dir(dir_list: List):
         os.makedirs(path, exist_ok=True)
         logging.info(f"Created directoriy at {path}")
 
-if __name__ == "__main__":
-    cont = create_dir(["src/test/hi.py"])

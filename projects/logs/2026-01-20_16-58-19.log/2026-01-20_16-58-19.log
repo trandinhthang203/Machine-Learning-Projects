@@ -1,0 +1,9 @@
+[2026-01-20 16:58:20,583] INFO - Created directoriy at artifacts
+[2026-01-20 16:58:20,583] INFO - Created directoriy at artifacts/data_validation
+[2026-01-20 16:58:20,613] INFO - age
+[2026-01-20 16:58:20,647] INFO - sex
+[2026-01-20 16:58:20,696] INFO - bmi
+[2026-01-20 16:58:20,701] INFO - children
+[2026-01-20 16:58:20,701] INFO - smoker
+[2026-01-20 16:58:20,701] INFO - region
+[2026-01-20 16:58:20,701] INFO - charges

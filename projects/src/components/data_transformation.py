@@ -5,17 +5,22 @@ import numpy as np
 from src.logger import logging
 from src.exception import CustomException
 from sklearn.preprocessing import StandardScaler
-from dataclasses import dataclass
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
+from src.config.configuration import ConfiguartionManager
 
-@dataclass
-class DataTansformationConfig:
-    processor_path = os.path.join("artifacts", "processor.pkl")
 
 class DataTransformation:
+    '''
+        Handle missing
+        Encode categorical
+        Scale numerical
+        Feature engineering
+        Save transformer
+    '''
     def __init__(self):
-        self.config = DataTansformationConfig()
+        data_transform = ConfiguartionManager()
+        self.config = data_transform.get_data_transformation_config()
 
     def get_data_transformation_obj(self):
         logging.info("Creating data transformation...")

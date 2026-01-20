@@ -1,6 +1,6 @@
 from src.constants.constant import *
 from src.utils.common import read_yaml, create_dir
-from src.entity.config_entity import DataIngestionConfig, DataValidationConfig
+from src.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
 
 
 class ConfiguartionManager:
@@ -27,7 +27,7 @@ class ConfiguartionManager:
     
     def get_data_validation_config(self) -> DataValidationConfig:
         config = self.config_file_path.data_validation
-        schema = self.schema_file_path.COLUMNS
+        schema = self.schema_file_path.columns
         create_dir([config.root_dir])
 
         data_validation_config = DataValidationConfig(
@@ -38,3 +38,13 @@ class ConfiguartionManager:
         )
         return data_validation_config
 
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config_file_path.data_transformation
+        create_dir([config.root_dir])
+
+        data_transformation_config = DataTransformationConfig(
+            root_dir=config.root_dir,
+            data_path=config.data_path
+        )
+
+        return data_transformation_config

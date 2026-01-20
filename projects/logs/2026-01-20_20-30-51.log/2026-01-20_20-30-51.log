@@ -1,0 +1,24 @@
+[2026-01-20 20:30:52,236] INFO - Created directoriy at artifacts
+[2026-01-20 20:30:52,236] INFO - Created directoriy at artifacts/data_validation
+[2026-01-20 20:30:52,342] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,342] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,344] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,344] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,345] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,346] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,347] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,347] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,348] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,349] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,349] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,350] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,350] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,351] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,351] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,351] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,352] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,352] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,352] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,353] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,353] INFO - <class 'pandas.core.series.Series'>
+[2026-01-20 20:30:52,353] INFO - True

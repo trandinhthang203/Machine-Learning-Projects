@@ -8,6 +8,11 @@ from urllib.request import urlretrieve
 import zipfile
 
 class DataIngestion:
+    '''
+        Download / collect data
+        Lưu raw data
+        (Có thể) unzip
+    '''
     def __init__(self):
         data_ingestion = ConfiguartionManager()
         self.ingestion_config = data_ingestion.get_data_ingestion_config()

@@ -6,7 +6,7 @@ from src.exception import CustomException
 from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 from pathlib import Path
-from src.config.configuration import DataIngestionConfig
+from src.entity.config_entity import DataIngestionConfig
 
 class DataIngestion:
     def __init__(self):

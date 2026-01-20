@@ -12,11 +12,12 @@ from src.config.configuration import ConfiguartionManager
 
 class DataTransformation:
     '''
+        EDA
         Handle missing
         Encode categorical
         Scale numerical
         Feature engineering
-        Save transformer
+        Save transformer v.v
     '''
     def __init__(self):
         data_transform = ConfiguartionManager()
@@ -101,3 +102,7 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e, sys)
+        
+if __name__ == "__main__":
+    ingestion = DataTransformation()
+    # ingestion.init_data_validation()

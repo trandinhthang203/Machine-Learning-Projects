@@ -38,6 +38,3 @@ class DataValidation:
         except Exception as e:
             raise CustomException(e, sys)
         
-if __name__ == "__main__":
-    ingestion = DataValidation()
-    ingestion.init_data_validation()

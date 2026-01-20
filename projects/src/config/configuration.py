@@ -1,6 +1,12 @@
 from src.constants.constant import *
 from src.utils.common import read_yaml, create_dir
-from src.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
+from src.entity.config_entity import (
+    DataIngestionConfig, 
+    DataValidationConfig, 
+    DataTransformationConfig,
+    ModelTrainerConfig,
+    ModelEvaluationConfig
+)
 
 
 class ConfiguartionManager:
@@ -48,3 +54,10 @@ class ConfiguartionManager:
         )
 
         return data_transformation_config
+
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        pass
+
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        pass

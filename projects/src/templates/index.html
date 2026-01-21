@@ -1,11 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dự Đoán Giá Nhà - House Price Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .form-group label .label-description {
+            font-weight: 400;
+            color: #666;
+            font-size: 0.85em;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #b8c5f2;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-weight: 600;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>E2E ML Projects</h1>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Dự Đoán Giá Nhà</h1>
+            <p>Nhập thông tin bất động sản để dự đoán giá trị</p>
+        </div>
+
+        <div class="form-container">
+            <div class="info-box">
+                <p><strong>Hướng dẫn:</strong> Vui lòng điền đầy đủ thông tin về bất động sản. Hệ thống sẽ sử dụng mô hình Machine Learning để dự đoán giá nhà dựa trên các thông tin bạn cung cấp.</p>
+            </div>
+
+            <form action="/predict" method="POST">
+                <div class="section-title">📋 Thông Tin Cơ Bản</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="date">
+                            Ngày giao dịch
+                            <span class="label-description">Định dạng: YYYY-MM-DD</span>
+                        </label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bedrooms">
+                            Số phòng ngủ
+                            <span class="label-description">Số lượng phòng ngủ trong nhà</span>
+                        </label>
+                        <input type="number" id="bedrooms" name="bedrooms" min="0" step="1" required placeholder="vd: 3">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bathrooms">
+                            Số phòng tắm
+                            <span class="label-description">Có thể là số thập phân (vd: 2.5)</span>
+                        </label>
+                        <input type="number" id="bathrooms" name="bathrooms" min="0" step="0.25" required placeholder="vd: 2.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="floors">
+                            Số tầng
+                            <span class="label-description">Số tầng của ngôi nhà</span>
+                        </label>
+                        <input type="number" id="floors" name="floors" min="1" step="0.5" required placeholder="vd: 2">
+                    </div>
+                </div>
+
+                <div class="section-title">📐 Diện Tích</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="sqft_living">
+                            Diện tích sinh hoạt (sqft)
+                            <span class="label-description">Diện tích không gian sống</span>
+                        </label>
+                        <input type="number" id="sqft_living" name="sqft_living" min="0" required placeholder="vd: 2000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sqft_lot">
+                            Diện tích lô đất (sqft)
+                            <span class="label-description">Tổng diện tích lô đất</span>
+                        </label>
+                        <input type="number" id="sqft_lot" name="sqft_lot" min="0" required placeholder="vd: 5000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sqft_above">
+                            Diện tích trên mặt đất (sqft)
+                            <span class="label-description">Diện tích phần trên mặt đất</span>
+                        </label>
+                        <input type="number" id="sqft_above" name="sqft_above" min="0" required placeholder="vd: 1500">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sqft_basement">
+                            Diện tích tầng hầm (sqft)
+                            <span class="label-description">Diện tích tầng hầm (0 nếu không có)</span>
+                        </label>
+                        <input type="number" id="sqft_basement" name="sqft_basement" min="0" value="0" required placeholder="vd: 500">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sqft_living15">
+                            Diện tích sinh hoạt 15 nhà lân cận (sqft)
+                            <span class="label-description">Trung bình diện tích 15 nhà gần nhất</span>
+                        </label>
+                        <input type="number" id="sqft_living15" name="sqft_living15" min="0" required placeholder="vd: 1800">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sqft_lot15">
+                            Diện tích lô đất 15 nhà lân cận (sqft)
+                            <span class="label-description">Trung bình lô đất 15 nhà gần nhất</span>
+                        </label>
+                        <input type="number" id="sqft_lot15" name="sqft_lot15" min="0" required placeholder="vd: 4500">
+                    </div>
+                </div>
+
+                <div class="section-title">⭐ Đặc Điểm & Chất Lượng</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="waterfront">
+                            View hướng nước
+                            <span class="label-description">Nhà có view hướng nước không?</span>
+                        </label>
+                        <select id="waterfront" name="waterfront" required>
+                            <option value="">-- Chọn --</option>
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="view">
+                            Điểm view
+                            <span class="label-description">Thang điểm 0-4</span>
+                        </label>
+                        <select id="view" name="view" required>
+                            <option value="">-- Chọn --</option>
+                            <option value="0">0 - Không có view</option>
+                            <option value="1">1 - View trung bình</option>
+                            <option value="2">2 - View khá</option>
+                            <option value="3">3 - View tốt</option>
+                            <option value="4">4 - View xuất sắc</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="condition">
+                            Tình trạng
+                            <span class="label-description">Thang điểm 1-5</span>
+                        </label>
+                        <select id="condition" name="condition" required>
+                            <option value="">-- Chọn --</option>
+                            <option value="1">1 - Rất kém</option>
+                            <option value="2">2 - Kém</option>
+                            <option value="3">3 - Trung bình</option>
+                            <option value="4">4 - Tốt</option>
+                            <option value="5">5 - Rất tốt</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grade">
+                            Cấp độ xây dựng
+                            <span class="label-description">Thang điểm 1-13</span>
+                        </label>
+                        <input type="number" id="grade" name="grade" min="1" max="13" required placeholder="vd: 7">
+                    </div>
+                </div>
+
+                <div class="section-title">📅 Thông Tin Thời Gian</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="yr_built">
+                            Năm xây dựng
+                            <span class="label-description">Năm ngôi nhà được xây dựng</span>
+                        </label>
+                        <input type="number" id="yr_built" name="yr_built" min="1800" max="2025" required placeholder="vd: 1990">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="yr_renovated">
+                            Năm cải tạo
+                            <span class="label-description">0 nếu chưa cải tạo</span>
+                        </label>
+                        <input type="number" id="yr_renovated" name="yr_renovated" min="0" max="2025" value="0" required placeholder="vd: 2010">
+                    </div>
+                </div>
+
+                <div class="section-title">📍 Vị Trí</div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="zipcode">
+                            Mã bưu điện (Zipcode)
+                            <span class="label-description">Mã vùng của bất động sản</span>
+                        </label>
+                        <input type="number" id="zipcode" name="zipcode" required placeholder="vd: 98001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lat">
+                            Vĩ độ (Latitude)
+                            <span class="label-description">Tọa độ vĩ độ</span>
+                        </label>
+                        <input type="number" id="lat" name="lat" step="0.000001" required placeholder="vd: 47.5112">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="long">
+                            Kinh độ (Longitude)
+                            <span class="label-description">Tọa độ kinh độ</span>
+                        </label>
+                        <input type="number" id="long" name="long" step="0.000001" required placeholder="vd: -122.257">
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" class="btn-submit">🔮 Dự Đoán Giá Nhà</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

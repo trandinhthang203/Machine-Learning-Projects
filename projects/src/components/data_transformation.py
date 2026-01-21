@@ -54,7 +54,7 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
         
-    def handle_ouliers(self, colum, df: pd.DataFrame):
+    def handle_ouliers(self, colum, df: pd.DataFrame) -> pd.DataFrame:
         try:
             q1 = df[colum].quantile(0.25)
             q3 = df[colum].quantile(0.75)

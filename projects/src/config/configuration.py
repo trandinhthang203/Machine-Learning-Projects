@@ -56,8 +56,35 @@ class ConfiguartionManager:
         return data_transformation_config
 
     def get_model_trainer_config(self) -> ModelTrainerConfig:
-        pass
+        config = self.config_file_path.model_trainer
+        params = self.params_file_path.ElasticNet
+        target_column = self.schema_file_path.target_column
+        create_dir([config.root_dir])
+
+        model_trainer_config = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            train_path=config.train.path,
+            test_path=config.test_path,
+            model_name=config.model_name,
+            alpha=params.alpha,
+            l1_ratio=params.l1_ratio,
+            target_column=target_column
+        )
+        return model_trainer_config
 
 
     def get_model_evaluation_config(self) -> ModelEvaluationConfig:
-        pass
+        config = self.config_file_path.model_evaluation
+        params: dict = self.params_file_path.ElasticNet
+        target_column = self.schema_file_path.target_column
+        create_dir([[config.root_dir]])
+
+        model_evaluation_config = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            test_path=config.test_path,
+            model_path=config.model_path,
+            params=params,
+            metric_file_name=config.metric_file_name,
+            target_column=target_column
+        )
+        return model_evaluation_config

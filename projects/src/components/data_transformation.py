@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from src.config.configuration import ConfiguartionManager
+from src.logger import logging
 
 
 class DataTransformation:
@@ -23,6 +24,34 @@ class DataTransformation:
         data_transform = ConfiguartionManager()
         self.config = data_transform.get_data_transformation_config()
 
+    def handle_missing_value(self, df: pd.DataFrame):
+        try:
+            missing_value = df.isnull().sum()
+
+            if missing_value > 0:
+
+                logging.info(f"Total missing value {missing_value[missing_value > 0]}")
+            else:
+                logging.info(f"No missing value.")
+
+            # countinue
+
+        except Exception as e:
+            raise CustomException(e, sys)
+        
+
+    def handle_dupplidate(self, df: pd.DataFrame):
+        try:
+            n_duplicates = df.duplicated().sum()
+
+            if n_duplicates > 0:
+                df.drop_duplicates()
+                logging.info(f"Removed {n_duplicates} duplicates")
+            else:
+                logging.info(f"No duplicate.")
+
+        except Exception as e:
+            raise CustomException(e, sys)
     def get_data_transformation_obj(self):
         logging.info("Creating data transformation...")
         
@@ -105,4 +134,4 @@ class DataTransformation:
         
 if __name__ == "__main__":
     ingestion = DataTransformation()
-    # ingestion.init_data_validation()
+    ingestion.handle_missing_value()

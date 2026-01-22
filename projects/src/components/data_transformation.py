@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from src.config.configuration import ConfiguartionManager
 from src.logger import logging
-
+from typing import List
 
 class DataTransformation:
     '''
@@ -71,9 +71,23 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
         
-    def features_engineering(self, df: pd.DataFrame):
-        # 
-        pass
+    def features_engineering(
+        self, 
+        df: pd.DataFrame, 
+        target_col: str, 
+        num_cols: List[str], 
+        cat_cols: List[str]
+    ):
+        try:
+            # log transform target feature
+            logging.info(f"Skewness target column before log trasform {df[target_col].skew()}")
+            log_target = "log" + target_col
+            df[log_target] = np.log1p(df[target_col])
+            logging.info(f"Skewness target column after log trasform {df[log_target].skew()}")
+
+            
+        except Exception as e:
+            raise CustomException(e, sys)
 
 
 

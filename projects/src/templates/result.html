@@ -257,6 +257,16 @@
             opacity: 0.9;
         }
 
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .action-buttons {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -296,7 +306,7 @@
             <div class="price-display">
                 <div class="price-label">Giá Dự Đoán</div>
                 <div class="price-value">
-                    <span class="price-currency">$</span> {{ "{:,.0f}".format(prediction) }}
+                    <span class="price-currency">$</span> <span id="price-amount">{{ "{:,.0f}".format(prediction) }}</span>
                 </div>
                 <div class="confidence-bar">
                     <div class="confidence-fill" style="width: 85%;"></div>
@@ -317,8 +327,8 @@
                         <div class="stat-label">Phòng tắm</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">{{ "{:,.0f}".format(sqft_living) }}</div>
-                        <div class="stat-label">sqft</div>
+                        <div class="stat-value">{{ "{:,}".format(sqft_living) }}</div>
+                        <div class="stat-label">sqft sinh hoạt</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{{ floors }}</div>
@@ -334,12 +344,12 @@
                 <div class="details-grid">
                     <div class="detail-card">
                         <div class="detail-label">Diện tích sinh hoạt</div>
-                        <div class="detail-value">{{ "{:,.0f}".format(sqft_living) }} sqft</div>
+                        <div class="detail-value">{{ "{:,}".format(sqft_living) }} sqft</div>
                     </div>
                     
                     <div class="detail-card">
                         <div class="detail-label">Diện tích lô đất</div>
-                        <div class="detail-value">{{ "{:,.0f}".format(sqft_lot) }} sqft</div>
+                        <div class="detail-value">{{ "{:,}".format(sqft_lot) }} sqft</div>
                     </div>
                     
                     <div class="detail-card">
@@ -349,7 +359,7 @@
                     
                     <div class="detail-card">
                         <div class="detail-label">Năm cải tạo</div>
-                        <div class="detail-value">{{ yr_renovated if yr_renovated > 0 else "Chưa cải tạo" }}</div>
+                        <div class="detail-value">{% if yr_renovated > 0 %}{{ yr_renovated }}{% else %}Chưa cải tạo{% endif %}</div>
                     </div>
                     
                     <div class="detail-card">
@@ -364,7 +374,7 @@
                     
                     <div class="detail-card">
                         <div class="detail-label">View hướng nước</div>
-                        <div class="detail-value">{{ "Có" if waterfront == 1 else "Không" }}</div>
+                        <div class="detail-value">{% if waterfront == 1 %}Có{% else %}Không{% endif %}</div>
                     </div>
                     
                     <div class="detail-card">
@@ -384,12 +394,12 @@
 
                     <div class="detail-card">
                         <div class="detail-label">Diện tích trên mặt đất</div>
-                        <div class="detail-value">{{ "{:,.0f}".format(sqft_above) }} sqft</div>
+                        <div class="detail-value">{{ "{:,}".format(sqft_above) }} sqft</div>
                     </div>
 
                     <div class="detail-card">
                         <div class="detail-label">Diện tích tầng hầm</div>
-                        <div class="detail-value">{{ "{:,.0f}".format(sqft_basement) }} sqft</div>
+                        <div class="detail-value">{{ "{:,}".format(sqft_basement) }} sqft</div>
                     </div>
                 </div>
             </div>
@@ -410,8 +420,8 @@
 
     <script>
         function shareResult() {
-            const price = "{{ '{:,.0f}'.format(prediction) }}";
-            const text = `Giá nhà dự đoán: $${price}`;
+            const priceText = document.getElementById('price-amount').textContent;
+            const text = `Giá nhà dự đoán: $${priceText}`;
             
             if (navigator.share) {
                 navigator.share({
@@ -423,6 +433,8 @@
                 // Fallback: copy to clipboard
                 navigator.clipboard.writeText(text).then(() => {
                     alert('Đã copy kết quả vào clipboard!');
+                }).catch(() => {
+                    alert(text);
                 });
             }
         }

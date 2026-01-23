@@ -1,5 +1,6 @@
 from pathlib import Path
 from dataclasses import dataclass
+from typing import List
 
 @dataclass(frozen=True)
 class DataIngestionConfig:
@@ -21,6 +22,8 @@ class DataValidationConfig:
 class DataTransformationConfig:
     root_dir: Path
     data_path: Path
+    num_columns: List[str]
+    cat_columns: List[str]
 
 
 @dataclass(frozen=True)

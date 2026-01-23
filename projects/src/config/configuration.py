@@ -46,11 +46,15 @@ class ConfiguartionManager:
 
     def get_data_transformation_config(self) -> DataTransformationConfig:
         config = self.config_file_path.data_transformation
+        num_columns = self.schema_file_path.num_columns
+        cat_columns = self.schema_file_path.cat_columns
         create_dir([config.root_dir])
 
         data_transformation_config = DataTransformationConfig(
             root_dir=config.root_dir,
-            data_path=config.data_path
+            data_path=config.data_path,
+            num_columns=num_columns,
+            cat_columns=cat_columns
         )
 
         return data_transformation_config

@@ -75,17 +75,34 @@ class DataTransformation:
         self, 
         df: pd.DataFrame, 
         target_col: str, 
-        num_cols: List[str], 
-        cat_cols: List[str]
+        num_cols: List[any], 
+        cat_cols: List[any]
     ):
         try:
             # log transform target feature
+            logging.info(f"Target: {target_col}")
             logging.info(f"Skewness target column before log trasform {df[target_col].skew()}")
-            log_target = "log" + target_col
+            log_target = "log_" + target_col
             df[log_target] = np.log1p(df[target_col])
             logging.info(f"Skewness target column after log trasform {df[log_target].skew()}")
 
-            
+            df["is_renovated"] = (df["yr_renovated"] > 0).astype(int)
+
+            top_skewness = {}
+            for col in num_cols:
+                top_skewness[col] = df[col].skew()
+
+            filtered = {k:v for k, v in top_skewness.items() if abs(v) > 1}
+            logging.info(sorted(filtered.items(), key=lambda x : x[1], reverse=True))
+
+            # log transform top skewness
+            for col in list(filtered.keys()):
+                log_col = "log_" + col
+                df[log_col] = np.log1p(df[col])
+                logging.info(f"Log col {log_col}: {df[log_col].skew()}, col {col}: {df[col].skew()}")
+
+            logging.info(f"Columns: {df.columns}")
+
         except Exception as e:
             raise CustomException(e, sys)
 
@@ -101,4 +118,15 @@ class DataTransformation:
         
 if __name__ == "__main__":
     ingestion = DataTransformation()
-    ingestion.handle_missing_value()
+    path = str(ingestion.config.data_path)
+    logging.info(f"Path: {path}, type {type(path)}")
+
+    df = pd.read_csv(path)
+    target_column = "price"
+    num_columns = list((dict(ingestion.config.num_columns)).keys())
+    cat_columns = list((dict(ingestion.config.cat_columns)).keys())
+
+    logging.info(f"Path: {num_columns}, type {type(num_columns)}")
+    logging.info(f"Path: {cat_columns}, type {type(cat_columns)}")
+
+    ingestion.features_engineering(df, target_column, num_columns, cat_columns)

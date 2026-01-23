@@ -53,6 +53,7 @@ class ConfiguartionManager:
         data_transformation_config = DataTransformationConfig(
             root_dir=config.root_dir,
             data_path=config.data_path,
+            data_transform_path=config.data_transform_path,
             num_columns=num_columns,
             cat_columns=cat_columns
         )
@@ -63,16 +64,22 @@ class ConfiguartionManager:
         config = self.config_file_path.model_trainer
         params = self.params_file_path.ElasticNet
         target_column = self.schema_file_path.target_column
+        num_columns = list(dict(self.schema_file_path.num_columns).keys())
+        cat_columns = list(dict(self.schema_file_path.cat_columns).keys())
         create_dir([config.root_dir])
 
         model_trainer_config = ModelTrainerConfig(
             root_dir=config.root_dir,
-            train_path=config.train.path,
+            data_path=config.data_path,
+            train_path=config.train_path,
             test_path=config.test_path,
             model_name=config.model_name,
             alpha=params.alpha,
             l1_ratio=params.l1_ratio,
-            target_column=target_column
+            test_size=params.test_size,
+            target_column=target_column,
+            num_columns = num_columns,
+            cat_columns=cat_columns
         )
         return model_trainer_config
 

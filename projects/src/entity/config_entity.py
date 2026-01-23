@@ -22,6 +22,7 @@ class DataValidationConfig:
 class DataTransformationConfig:
     root_dir: Path
     data_path: Path
+    data_transform_path: Path
     num_columns: List[str]
     cat_columns: List[str]
 
@@ -29,12 +30,16 @@ class DataTransformationConfig:
 @dataclass(frozen=True)
 class ModelTrainerConfig:
     root_dir: Path
+    data_path: Path
     train_path: Path
     test_path: Path
     model_name: str
     alpha: float
     l1_ratio: float
+    test_size: float
     target_column: str
+    num_columns: list[str]
+    cat_columns: list[str]
 
 
 @dataclass(frozen=True)

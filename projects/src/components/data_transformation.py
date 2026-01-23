@@ -10,6 +10,7 @@ from sklearn.compose import ColumnTransformer
 from src.config.configuration import ConfiguartionManager
 from src.logger import logging
 from typing import List
+from sklearn.model_selection import train_test_split
 
 class DataTransformation:
     '''
@@ -28,7 +29,7 @@ class DataTransformation:
         try:
             missing_value = df.isnull().sum()
 
-            if missing_value > 0:
+            if missing_value.sum() > 0:
                 logging.info(f"Total missing value {missing_value[missing_value > 0]}")
             else:
                 logging.info(f"No missing value.")
@@ -101,32 +102,36 @@ class DataTransformation:
                 df[log_col] = np.log1p(df[col])
                 logging.info(f"Log col {log_col}: {df[log_col].skew()}, col {col}: {df[col].skew()}")
 
-            logging.info(f"Columns: {df.columns}")
+            # features selection
+            cols_drop = ["id", "date", "yr_renovated", "zipcode", target_col]
+            cols_drop += list(filtered.keys())
+            df = df.drop(columns=cols_drop)
+
+            return df
 
         except Exception as e:
             raise CustomException(e, sys)
-
 
 
     def init_data_transformation(self):
         try:
             logging.info("Creating data transformation...")
+            path = str(self.config.data_path)
+            df = pd.read_csv(path)
+
+            self.handle_missing_value(df)
+            df = self.handle_dupplidate(df)
+            # df = ingestion.handle_ouliers()
+            target_column = "price"
+            num_columns = list((dict(self.config.num_columns)).keys())
+            cat_columns = list((dict(self.config.cat_columns)).keys())
+            df = self.features_engineering(df, target_column, num_columns, cat_columns)
+            df.to_csv(self.config.data_transform_path)
+            return df
 
         except Exception as e:
             raise CustomException(e, sys)
-
-        
 if __name__ == "__main__":
+
     ingestion = DataTransformation()
-    path = str(ingestion.config.data_path)
-    logging.info(f"Path: {path}, type {type(path)}")
-
-    df = pd.read_csv(path)
-    target_column = "price"
-    num_columns = list((dict(ingestion.config.num_columns)).keys())
-    cat_columns = list((dict(ingestion.config.cat_columns)).keys())
-
-    logging.info(f"Path: {num_columns}, type {type(num_columns)}")
-    logging.info(f"Path: {cat_columns}, type {type(cat_columns)}")
-
-    ingestion.features_engineering(df, target_column, num_columns, cat_columns)
+    ingestion.init_data_transformation()

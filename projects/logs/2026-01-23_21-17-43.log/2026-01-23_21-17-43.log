@@ -1,0 +1,31 @@
+[2026-01-23 21:17:52,794] INFO - Created directoriy at artifacts
+[2026-01-23 21:17:52,794] INFO - Created directoriy at artifacts/data_transformation
+[2026-01-23 21:17:52,794] INFO - Path: artifacts/data_ingestion/data.csv, type <class 'str'>
+[2026-01-23 21:17:52,896] INFO - Path: ['bedrooms', 'bathrooms', 'floors', 'sqft_living', 'sqft_lot', 'sqft_above', 'sqft_basement', 'sqft_living15', 'sqft_lot15', 'yr_built'], type <class 'list'>
+[2026-01-23 21:17:52,897] INFO - Path: ['waterfront', 'view', 'condition', 'grade'], type <class 'list'>
+[2026-01-23 21:17:52,898] INFO - Target: price
+[2026-01-23 21:17:52,901] INFO - Skewness target column before log trasform 4.024069144684714
+[2026-01-23 21:17:52,904] INFO - Skewness target column after log trasform 0.42807651495749055
+[2026-01-23 21:17:52,908] INFO - [('sqft_lot', np.float64(13.06001895903175)), ('sqft_lot15', np.float64(9.506743246764398)), ('bedrooms', np.float64(1.9742995354360104)), ('sqft_basement', np.float64(1.577965055599625)), ('sqft_living', np.float64(1.471555426802092)), ('sqft_above', np.float64(1.4466644733818368)), ('sqft_living15', np.float64(1.108181275896697))]
+[2026-01-23 21:17:52,910] INFO - Log col log_bedrooms: -0.4754890396704872, col bedrooms: 1.9742995354360104
+[2026-01-23 21:17:52,912] INFO - Log col log_sqft_living: -0.03472727287537167, col sqft_living: 1.471555426802092
+[2026-01-23 21:17:52,915] INFO - Log col log_sqft_lot: 0.9628928239425661, col sqft_lot: 13.06001895903175
+[2026-01-23 21:17:52,915] INFO - Log col log_sqft_above: 0.25403403863991236, col sqft_above: 1.4466644733818368
+[2026-01-23 21:17:52,923] INFO - Log col log_sqft_basement: 0.48460270759462765, col sqft_basement: 1.577965055599625
+[2026-01-23 21:17:52,923] INFO - Log col log_sqft_living15: 0.20696438207384624, col sqft_living15: 1.108181275896697
+[2026-01-23 21:17:52,923] INFO - Log col log_sqft_lot15: 0.9672552013789001, col sqft_lot15: 9.506743246764398
+[2026-01-23 21:17:52,923] INFO - Columns drop: ['id', 'date', 'yr_renovated', 'zipcode', 'bedrooms', 'sqft_living', 'sqft_lot', 'sqft_above', 'sqft_basement', 'sqft_living15', 'sqft_lot15']
+[2026-01-23 21:17:52,989] INFO - Shape train: (17290, 30), shape test:                id             date      price  bedrooms  bathrooms  ...  log_sqft_lot  log_sqft_above  log_sqft_basement  log_sqft_living15  log_sqft_lot15
+735    2591820310  20141006T000000   365000.0         4       2.25  ...      9.093132        7.635787           0.000000           7.779467        8.949105
+2830   7974200820  20140821T000000   865000.0         5       3.00  ...      8.814479        7.512618           6.976348           7.771067        8.745762
+4106   7701450110  20140815T000000  1038000.0         4       2.50  ...      9.295967        8.235095           0.000000           8.219057        9.178437
+16218  9522300010  20150331T000000  1490000.0         3       3.50  ...      9.589393        8.425297           0.000000           8.306719        9.562897
+19964  9510861140  20140714T000000   711000.0         3       2.50  ...      8.589886        7.844241           0.000000           7.719130        8.306719
+...           ...              ...        ...       ...        ...  ...           ...             ...                ...                ...             ...
+13674  6163900333  20141110T000000   338000.0         3       1.75  ...      8.950403        7.131699           0.000000           7.201171        8.950403
+20377  3528960020  20140708T000000   673000.0         3       2.75  ...      8.159661        7.948385           0.000000           7.678326        8.161090
+8805   1687000220  20141016T000000   285000.0         4       2.50  ...      8.389587        7.797702           0.000000           7.797702        8.389587
+10168  4141400030  20141201T000000   605000.0         4       1.75  ...      9.221181        7.719130           0.000000           7.626083        9.185125
+2522   1822500160  20141212T000000   356500.0         4       2.50  ...      9.347839        7.852050           0.000000           7.796058        8.699181
+
+[4323 rows x 30 columns]

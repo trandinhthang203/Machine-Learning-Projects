@@ -1,0 +1,16 @@
+[2026-01-23 22:31:56,047] INFO - Created directoriy at artifacts
+[2026-01-23 22:31:56,047] INFO - Created directoriy at artifacts/data_transformation
+[2026-01-23 22:31:56,047] INFO - Creating data transformation...
+[2026-01-23 22:31:56,132] INFO - No missing value.
+[2026-01-23 22:31:56,168] INFO - No duplicate.
+[2026-01-23 22:31:56,168] INFO - Target: price
+[2026-01-23 22:31:56,170] INFO - Skewness target column before log trasform 4.024069144684714
+[2026-01-23 22:31:56,172] INFO - Skewness target column after log trasform 0.42807651495749055
+[2026-01-23 22:31:56,175] INFO - [('sqft_lot', np.float64(13.06001895903175)), ('sqft_lot15', np.float64(9.506743246764398)), ('bedrooms', np.float64(1.9742995354360104)), ('sqft_basement', np.float64(1.577965055599625)), ('sqft_living', np.float64(1.471555426802092)), ('sqft_above', np.float64(1.4466644733818368)), ('sqft_living15', np.float64(1.108181275896697))]
+[2026-01-23 22:31:56,178] INFO - Log col log_bedrooms: -0.4754890396704872, col bedrooms: 1.9742995354360104
+[2026-01-23 22:31:56,181] INFO - Log col log_sqft_living: -0.03472727287537167, col sqft_living: 1.471555426802092
+[2026-01-23 22:31:56,183] INFO - Log col log_sqft_lot: 0.9628928239425661, col sqft_lot: 13.06001895903175
+[2026-01-23 22:31:56,185] INFO - Log col log_sqft_above: 0.25403403863991236, col sqft_above: 1.4466644733818368
+[2026-01-23 22:31:56,187] INFO - Log col log_sqft_basement: 0.48460270759462765, col sqft_basement: 1.577965055599625
+[2026-01-23 22:31:56,189] INFO - Log col log_sqft_living15: 0.20696438207384624, col sqft_living15: 1.108181275896697
+[2026-01-23 22:31:56,190] INFO - Log col log_sqft_lot15: 0.9672552013789001, col sqft_lot15: 9.506743246764398

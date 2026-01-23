@@ -1,0 +1,9 @@
+[2026-01-23 22:47:57,116] INFO - Created directoriy at artifacts
+[2026-01-23 22:47:57,116] INFO - Created directoriy at artifacts/model_trainer
+[2026-01-23 22:47:57,289] INFO - Columns: Index(['bathrooms', 'floors', 'waterfront', 'view', 'condition', 'grade',
+       'yr_built', 'lat', 'long', 'log_price', 'is_renovated', 'log_bedrooms',
+       'log_sqft_living', 'log_sqft_lot', 'log_sqft_above',
+       'log_sqft_basement', 'log_sqft_living15', 'log_sqft_lot15'],
+      dtype='object')
+[2026-01-23 22:47:57,296] INFO - Numerical columns: ['bathrooms', 'floors', 'yr_built', 'lat', 'long', 'is_renovated', 'log_bedrooms', 'log_sqft_living', 'log_sqft_lot', 'log_sqft_above', 'log_sqft_basement', 'log_sqft_living15', 'log_sqft_lot15']
+[2026-01-23 22:47:57,634] INFO - MSE: 0.28520653694000997, MAE: 0.41867209055788773, R2:-0.0006166103927380817

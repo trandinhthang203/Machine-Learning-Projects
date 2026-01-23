@@ -1,3 +1,64 @@
-/venv
-# artifacts/
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# =========================
+# Virtual environment
+# =========================
+venv/
+.env/
+.env.*
+
+# =========================
+# ML artifacts (CỰC KỲ QUAN TRỌNG)
+# =========================
+artifacts/
+artifacts/**
+models/
 *.joblib
+*.pkl
+*.h5
+*.pt
+*.onnx
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Jupyter
+# =========================
+notebook/.ipynb_checkpoints/
+.ipynb_checkpoints/
+
+# =========================
+# Build / package
+# =========================
+build/
+dist/
+*.egg-info/
+King_The_House_Predict.egg-info/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# GitHub Actions artifacts (nếu có)
+# =========================
+.github/workflows/*.log

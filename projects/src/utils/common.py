@@ -3,7 +3,7 @@ from box import ConfigBox
 import yaml
 import os
 from src.constants.constant import *
-from src.logger import logging
+from projects.src.utils.logger import logging
 from typing import List
 
 def read_yaml(path: Path) -> ConfigBox:

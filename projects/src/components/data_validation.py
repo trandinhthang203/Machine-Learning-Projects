@@ -1,9 +1,9 @@
 from src.entity.config_entity import DataValidationConfig
 from src.config.configuration import ConfiguartionManager
-from src.exception import CustomException
+from projects.src.utils.exception import CustomException
 import sys
 import pandas as pd
-from src.logger import logging
+from projects.src.utils.logger import logging
 
 class DataValidation:
     '''

@@ -1,7 +1,7 @@
 import os
 import sys
-from src.logger import logging
-from src.exception import CustomException
+from projects.src.utils.logger import logging
+from projects.src.utils.exception import CustomException
 from src.entity.config_entity import DataIngestionConfig
 from src.config.configuration import ConfiguartionManager
 from urllib.request import urlretrieve

@@ -88,7 +88,7 @@ class ConfiguartionManager:
         config = self.config_file_path.model_evaluation
         params: dict = self.params_file_path.ElasticNet
         target_column = self.schema_file_path.target_column
-        create_dir([[config.root_dir]])
+        create_dir([config.root_dir])
 
         model_evaluation_config = ModelEvaluationConfig(
             root_dir=config.root_dir,

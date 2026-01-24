@@ -2,13 +2,13 @@ import os
 import sys
 import pandas as pd
 import numpy as np
-from src.logger import logging
-from src.exception import CustomException
+from projects.src.utils.logger import logging
+from projects.src.utils.exception import CustomException
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from src.config.configuration import ConfiguartionManager
-from src.logger import logging
+from projects.src.utils.logger import logging
 from typing import List
 from sklearn.model_selection import train_test_split
 

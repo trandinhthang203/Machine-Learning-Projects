@@ -1,6 +1,14 @@
-FROM python:3.10-slim-buster
+FROM python:3.10-slim
 
-RUN apt update -y && apt install awscli -y
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        curl \
+    && pip install --no-cache-dir awscli \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
 WORKDIR /app
 
 COPY . /app

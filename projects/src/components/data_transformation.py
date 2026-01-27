@@ -18,7 +18,7 @@ class DataTransformation:
         Handle missing
         Encode categorical
         Scale numerical
-        Feature engineering
+        Feature engineering + Pipeline
         Save transformer v.v
     '''
     def __init__(self):

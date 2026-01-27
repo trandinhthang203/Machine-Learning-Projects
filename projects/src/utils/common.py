@@ -2,7 +2,7 @@ from pathlib import Path
 from box import ConfigBox
 import yaml
 import os
-from src.constants.constant import *
+from projects.src.constants.constant import *
 from projects.src.utils.logger import logging
 from typing import List
 

@@ -5,6 +5,7 @@ import os
 from projects.src.constants.constant import *
 from projects.src.utils.logger import logging
 from typing import List
+import json
 
 def read_yaml(path: Path) -> ConfigBox:
     with open(path, 'r') as file:
@@ -18,3 +19,6 @@ def create_dir(dir_list: List):
         os.makedirs(path, exist_ok=True)
         logging.info(f"Created directoriy at {path}")
 
+def write_json(path: Path, data):
+    with open(path, "w") as file:
+        json.dump(data, file, indent=2, default=list)

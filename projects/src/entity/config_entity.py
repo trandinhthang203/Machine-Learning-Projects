@@ -16,6 +16,7 @@ class DataValidationConfig:
     unzip_dir_data: Path
     STATUS_FILE: str
     all_schema: dict
+    validation_report_name: str
 
 
 @dataclass(frozen=True)

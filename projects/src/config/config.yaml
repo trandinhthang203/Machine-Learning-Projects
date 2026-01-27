@@ -10,7 +10,8 @@ data_ingestion:
 data_validation:
   root_dir: artifacts/data_validation
   unzip_dir_data: artifacts/data_ingestion/data.csv
-  STATUS_FILE: artifacts/data_validation/status.txt
+  STATUS_FILE: artifacts/data_validation/status.json
+  validation_report_name: validation_report.json
 
 
 data_transformation:

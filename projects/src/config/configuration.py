@@ -40,7 +40,8 @@ class ConfiguartionManager:
             root_dir=config.root_dir,
             unzip_dir_data=config.unzip_dir_data,
             STATUS_FILE=config.STATUS_FILE,
-            all_schema=schema
+            all_schema=schema,
+            validation_report_name=config.validation_report_name
         )
         return data_validation_config
 

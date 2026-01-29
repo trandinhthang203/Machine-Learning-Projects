@@ -4,40 +4,115 @@ import pandas as pd
 import numpy as np
 from projects.src.utils.logger import logging
 from projects.src.utils.exception import CustomException
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from src.config.configuration import ConfiguartionManager
 from projects.src.utils.logger import logging
 from typing import List
 from sklearn.model_selection import train_test_split
+from sklearn.base import BaseEstimator, TransformerMixin
+
+
+class SkewnessLogTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, skewness_thresold = 1.0):
+        self.skewness_thresold = skewness_thresold
+        self.transform_cols_ = []
+
+    # học từ tập train
+    def fit(self, X, y = None):
+        if isinstance(X, pd.DataFrame):
+            X_numerical = X.select_dtypes(include="number")
+            skewness = X_numerical.skew()
+            self.transform_cols_ = skewness[abs(skewness) > self.skewness_thresold].index.to_list()
+
+        return self
+
+    # trainform ở tập train/test
+    def transform(self, X):
+        # dùng x_copy để không thay đổi dữ liệu gốc
+        # trong trường hợp dùng trong pipeline sẽ bị thay đổi dữ liệu ban đầu
+        X_copy = X.copy()
+        if isinstance(X_copy, pd.DataFrame):
+            for col in self.transform_cols_:
+                X_copy[f"log_{col}"] = np.log1p(X_copy[col])
+                logging.info(f"Log-transformed '{col}' → skewness: {X_copy[f'log_{col}'].skew():.3f}")
+
+        return X_copy
+
+
+class FeatureEngineering(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X_copy = X.copy()
+
+        if isinstance(X_copy, pd.DataFrame):
+            X_copy["is_renovated"] = (X_copy["yr_renovated"] > 0).astype(int)
+            cols_drop = ["id", "date", "yr_renovated", "zipcode"]
+            X_copy.drop(columns=cols_drop)
+
+        return X_copy
+    
+class OutlierClipper(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        super().__init__()
+
+
+
 
 class DataTransformation:
     '''
         EDA
-        Handle missing
-        Encode categorical
-        Scale numerical
-        Feature engineering + Pipeline
-        Save transformer v.v
+        Cleaning
+        Transform
+        Feature engineer
+        Feature selection
+        Create pipeline
     '''
     def __init__(self):
         data_transform = ConfiguartionManager()
         self.config = data_transform.get_data_transformation_config()
+        self.preprocessor = None
 
-    def handle_missing_value(self, df: pd.DataFrame):
-        try:
-            missing_value = df.isnull().sum()
+    def _create_preprocessing_pipeline(self, num_cols, cat_cols):
+        
+        numerical_transformer = Pipeline(
+            [
+                ("imputer", SimpleImputer(strategy="mean")),
+                ("scaler", StandardScaler())
+            ]
+        )
 
-            if missing_value.sum() > 0:
-                logging.info(f"Total missing value {missing_value[missing_value > 0]}")
-            else:
-                logging.info(f"No missing value.")
+        categorical_transformer = Pipeline(
+            [
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("scaler", OrdinalEncoder())
+            ]
+        )
 
-            # countinue
+        processor = ColumnTransformer(
+            [
+                ("num", numerical_transformer, num_cols),
+                ("cat", categorical_transformer, cat_cols)
+            ],
+            remainder="passthrough"
+        )
 
-        except Exception as e:
-            raise CustomException(e, sys)
+        full_pipeline = Pipeline(
+            [
+                ("feature_engineer", FeatureEngineering()),
+                ("skewness_transform", SkewnessLogTransformer()),
+                ("processor", processor)
+            ]
+        )
+
+        return full_pipeline
         
 
     def handle_dupplidate(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -66,46 +141,6 @@ class DataTransformation:
 
             df.loc[(df[colum] > upper_limit), colum] = upper_limit
             df.loc[(df[colum] < lower_linit), colum] = lower_linit
-
-            return df
-
-        except Exception as e:
-            raise CustomException(e, sys)
-        
-    def features_engineering(
-        self, 
-        df: pd.DataFrame, 
-        target_col: str, 
-        num_cols: List[any], 
-        cat_cols: List[any]
-    ):
-        try:
-            # log transform target feature
-            logging.info(f"Target: {target_col}")
-            logging.info(f"Skewness target column before log trasform {df[target_col].skew()}")
-            log_target = "log_" + target_col
-            df[log_target] = np.log1p(df[target_col])
-            logging.info(f"Skewness target column after log trasform {df[log_target].skew()}")
-
-            df["is_renovated"] = (df["yr_renovated"] > 0).astype(int)
-
-            top_skewness = {}
-            for col in num_cols:
-                top_skewness[col] = df[col].skew()
-
-            filtered = {k:v for k, v in top_skewness.items() if abs(v) > 1}
-            logging.info(sorted(filtered.items(), key=lambda x : x[1], reverse=True))
-
-            # log transform top skewness
-            for col in list(filtered.keys()):
-                log_col = "log_" + col
-                df[log_col] = np.log1p(df[col])
-                logging.info(f"Log col {log_col}: {df[log_col].skew()}, col {col}: {df[col].skew()}")
-
-            # features selection
-            cols_drop = ["id", "date", "yr_renovated", "zipcode", target_col]
-            cols_drop += list(filtered.keys())
-            df = df.drop(columns=cols_drop)
 
             return df
 

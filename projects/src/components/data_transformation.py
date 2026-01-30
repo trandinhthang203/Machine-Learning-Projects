@@ -8,9 +8,9 @@ from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from src.config.configuration import ConfiguartionManager
+from projects.src.config.configuration import ConfiguartionManager
 from projects.src.utils.logger import logging
-from typing import List
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -34,11 +34,13 @@ class SkewnessLogTransformer(BaseEstimator, TransformerMixin):
         # dùng x_copy để không thay đổi dữ liệu gốc
         # trong trường hợp dùng trong pipeline sẽ bị thay đổi dữ liệu ban đầu
         X_copy = X.copy()
+        cols_drop = []
         if isinstance(X_copy, pd.DataFrame):
             for col in self.transform_cols_:
-                X_copy[f"log_{col}"] = np.log1p(X_copy[col])
-                logging.info(f"Log-transformed '{col}' → skewness: {X_copy[f'log_{col}'].skew():.3f}")
+                X_copy[col] = np.log1p(X_copy[col])
+                logging.info(f"Log-transformed '{col}' -> skewness: {X_copy[col].skew():.3f}")
 
+        logging.info(f"Columns: {X_copy.columns}")
         return X_copy
 
 
@@ -55,7 +57,7 @@ class FeatureEngineering(BaseEstimator, TransformerMixin):
         if isinstance(X_copy, pd.DataFrame):
             X_copy["is_renovated"] = (X_copy["yr_renovated"] > 0).astype(int)
             cols_drop = ["id", "date", "yr_renovated", "zipcode"]
-            X_copy.drop(columns=cols_drop)
+            X_copy = X_copy.drop(columns=cols_drop)
 
         return X_copy
     
@@ -154,15 +156,48 @@ class DataTransformation:
             path = str(self.config.data_path)
             df = pd.read_csv(path)
 
-            self.handle_missing_value(df)
             df = self.handle_dupplidate(df)
             # df = ingestion.handle_ouliers()
             target_column = "price"
             num_columns = list((dict(self.config.num_columns)).keys())
             cat_columns = list((dict(self.config.cat_columns)).keys())
-            df = self.features_engineering(df, target_column, num_columns, cat_columns)
-            df.to_csv(self.config.data_transform_path)
-            return df
+
+            df[f"log_{target_column}"] = np.log1p(df[target_column])
+
+            cols_drop = [target_column, f"log_{target_column}"]
+            X = df.drop(columns=cols_drop, axis=1)
+            y = df[f"log_{target_column}"]
+
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+            self.preprocessor = self._create_preprocessing_pipeline(num_columns, cat_columns)
+            self.preprocessor.fit(X_train, y_train)
+            logging.info("Pipeline fitted on training data")
+
+            X_train_transformed = self.preprocessor.transform(X_train)
+            X_test_transformed = self.preprocessor.transform(X_test)
+
+            train_df = pd.DataFrame(X_train_transformed)
+            train_df[f"log_{target_column}"] = y_train.values
+            test_df = pd.DataFrame(X_test_transformed)
+            test_df[f"log_{target_column}"] = y_test.values
+
+            train_path = os.path.join(self.config.root_dir, self.config.train_transformed_name)
+            test_path = os.path.join(self.config.root_dir, self.config.test_transformed_name)
+            preprocessor_path = os.path.join(self.config.root_dir, self.config.preprocessor_name)
+
+            train_df.to_csv(train_path, index=False)
+            test_df.to_csv(test_path, index=False)
+            with open(preprocessor_path, "wb") as file:
+                joblib.dump(self.preprocessor, file)
+
+            logging.info(f"Preprocessor saved: {preprocessor_path}")
+            
+            logging.info("DATA TRANSFORMATION COMPLETED")
+            logging.info(f"Train shape: {train_df.shape}")
+            logging.info(f"Test shape: {test_df.shape}")
+
+            return train_path, test_path, preprocessor_path
 
         except Exception as e:
             raise CustomException(e, sys)

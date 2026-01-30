@@ -54,7 +54,9 @@ class ConfiguartionManager:
         data_transformation_config = DataTransformationConfig(
             root_dir=config.root_dir,
             data_path=config.data_path,
-            data_transform_path=config.data_transform_path,
+            train_transformed_name=config.train_transformed_name,
+            test_transformed_name=config.test_transformed_name,
+            preprocessor_name=config.preprocessor_name,
             num_columns=num_columns,
             cat_columns=cat_columns
         )

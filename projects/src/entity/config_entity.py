@@ -23,7 +23,9 @@ class DataValidationConfig:
 class DataTransformationConfig:
     root_dir: Path
     data_path: Path
-    data_transform_path: Path
+    train_transformed_name: str
+    test_transformed_name: str
+    preprocessor_name: str
     num_columns: List[str]
     cat_columns: List[str]
 

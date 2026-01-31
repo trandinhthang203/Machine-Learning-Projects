@@ -1,4 +1,4 @@
-from src.config.configuration import ConfiguartionManager
+from projects.src.config.configuration import ConfiguartionManager
 import joblib
 import pandas as pd
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -6,6 +6,7 @@ from projects.src.utils.logger import logging
 from projects.src.utils.exception import CustomException
 import sys
 import json
+import os
 
 class ModelEvaluation:
     def __init__(self):
@@ -32,9 +33,15 @@ class ModelEvaluation:
                 "R2": r2
             }
 
-            with open(self.config.metric_file_name, "w", encoding="utf-8") as file:
+            metrics_path = os.path.join(self.config.root_dir, self.config.metric_file_name)
+            with open(metrics_path, "w", encoding="utf-8") as file:
                 json.dump(metrics, file, ensure_ascii=False, indent=4)
                 logging.info(f"Metrics successfuly save to {self.config.metric_file_name}")
 
         except Exception as e:
             raise CustomException(e, sys)
+
+if __name__ == "__main__":
+
+    ingestion = ModelEvaluation()
+    ingestion.init_model_evaluation()

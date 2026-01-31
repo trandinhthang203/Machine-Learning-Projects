@@ -1,4 +1,4 @@
-from src.config.configuration import ConfiguartionManager
+from projects.src.config.configuration import ConfiguartionManager
 from projects.src.utils.logger import logging
 from projects.src.utils.exception import CustomException
 import sys
@@ -20,50 +20,13 @@ class ModelTrainer:
 
     def init_model_traner(self):
         try:
-            data_path = self.model_config.data_path
-            test_size = self.model_config.test_size
-            df = pd.read_csv(data_path, index_col=0)
-            logging.info(f"Columns: {df.columns}")
+            train_df = pd.read_csv(self.model_config.train_path)
 
-            num_columns = [x for x in list(df.columns) if (x not in self.model_config.cat_columns) and (x != "log_price")]
-            logging.info(f"Numerical columns: {num_columns}")
+            X_train = train_df.drop(columns=["log_price"])
+            y_train = train_df["log_price"]
 
-            data_train, data_test = train_test_split(df, test_size=test_size, random_state=42)
-            data_train.to_csv(self.model_config.train_path)
-            data_test.to_csv(self.model_config.test_path)
-
-            X_train = df.drop(columns=["log_price"])
-            y_train = df["log_price"]
-
-
-            num_pipeline = Pipeline(
-                [
-                    ("scaler", StandardScaler())
-                ]
-            )
-
-            cat_pipeline = Pipeline(
-                [
-                    ("encoder", OrdinalEncoder())
-                ]
-            )
-
-            processor = ColumnTransformer(
-                [
-                    ("num", num_pipeline, num_columns),
-                    # ("cat", cat_pipeline, self.model_config.cat_columns),
-                ],
-                remainder="passthrough"
-            )
-
-            trainer_pipeline = Pipeline(
-                [
-                    ("processor", processor),
-                    ("regressor", RandomForestRegressor())
-                ]
-            )
-
-            model = trainer_pipeline.fit(X_train, y_train)
+            model = RandomForestRegressor()
+            model = model.fit(X_train, y_train)
             joblib.dump(model, os.path.join(self.model_config.root_dir, self.model_config.model_name))
 
 

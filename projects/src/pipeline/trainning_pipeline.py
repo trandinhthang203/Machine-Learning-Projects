@@ -1,6 +1,15 @@
 # projects/src/pipeline/training_pipeline.py
 """
 Main training pipeline orchestrating toàn bộ quá trình training
+projects/src/pipeline/
+├── __init__.py
+├── training_pipeline.py          # Main training orchestration
+├── prediction_pipeline.py        # Inference pipeline
+├── data_pipeline.py              # Data processing pipeline
+├── validation_pipeline.py        # Data validation pipeline
+├── evaluation_pipeline.py        # Model evaluation pipeline
+├── retraining_pipeline.py        # Automated retraining
+└── monitoring_pipeline.py
 """
 import sys
 from projects.src.utils.logger import logging

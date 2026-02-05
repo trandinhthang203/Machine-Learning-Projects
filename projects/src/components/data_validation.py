@@ -152,6 +152,8 @@ class DataValidation:
             }
             write_json(self.validation_config.STATUS_FILE, overall_status)
 
+            return overall_status
+
         except Exception as e:
             raise CustomException(e, sys)
         

@@ -36,12 +36,14 @@ class ModelEvaluation:
             metrics_path = os.path.join(self.config.root_dir, self.config.metric_file_name)
             with open(metrics_path, "w", encoding="utf-8") as file:
                 json.dump(metrics, file, ensure_ascii=False, indent=4)
-                logging.info(f"Metrics successfuly save to {self.config.metric_file_name}")
+                logging.info(f"Metrics successfuly save to {metrics_path}")
+
+            return metrics_path
 
         except Exception as e:
             raise CustomException(e, sys)
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    ingestion = ModelEvaluation()
-    ingestion.init_model_evaluation()
+#     ingestion = ModelEvaluation()
+#     ingestion.init_model_evaluation()

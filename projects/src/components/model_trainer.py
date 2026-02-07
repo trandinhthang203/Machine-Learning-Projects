@@ -27,8 +27,10 @@ class ModelTrainer:
 
             model = RandomForestRegressor()
             model = model.fit(X_train, y_train)
-            joblib.dump(model, os.path.join(self.model_config.root_dir, self.model_config.model_name))
+            model_path = os.path.join(self.model_config.root_dir, self.model_config.model_name)
+            joblib.dump(model, model_path)
 
+            return model_path
 
         except Exception as e:
             raise CustomException(e, sys)

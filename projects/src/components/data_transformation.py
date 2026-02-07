@@ -193,7 +193,6 @@ class DataTransformation:
 
             logging.info(f"Preprocessor saved: {preprocessor_path}")
             
-            logging.info("DATA TRANSFORMATION COMPLETED")
             logging.info(f"Train shape: {train_df.shape}")
             logging.info(f"Test shape: {test_df.shape}")
 

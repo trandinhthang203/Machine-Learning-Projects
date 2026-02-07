@@ -5,7 +5,8 @@ from projects.src.entity.config_entity import (
     DataValidationConfig, 
     DataTransformationConfig,
     ModelTrainerConfig,
-    ModelEvaluationConfig
+    ModelEvaluationConfig,
+    PipelineConfig
 )
 
 
@@ -102,3 +103,12 @@ class ConfiguartionManager:
             target_column=target_column
         )
         return model_evaluation_config
+    
+    def get_training_pipeline_config(self) -> PipelineConfig:
+        config = self.config_file_path.pipeline_results
+        create_dir([config.root_dir])
+
+        training_pipeline_config = PipelineConfig(
+            root_dir=config.root_dir
+        )
+        return training_pipeline_config

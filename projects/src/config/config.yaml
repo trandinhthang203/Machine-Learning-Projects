@@ -35,3 +35,7 @@ model_evaluation:
   test_path: artifacts/data_transformation/test.csv
   model_path: artifacts/model_trainer/model.joblib
   metric_file_name: metrics.json
+
+pipeline_results:
+  root_dir: artifacts/pipeline_results
+  # training_pipeline_file_name: f"training_pipeline_{self.start_time.strftime('%Y%m%d_%H%M%S')}.json"

@@ -53,3 +53,8 @@ class ModelEvaluationConfig:
     params: dict
     metric_file_name: float
     target_column: str
+
+
+@dataclass(frozen=True)
+class PipelineConfig:
+    root_dir: Path

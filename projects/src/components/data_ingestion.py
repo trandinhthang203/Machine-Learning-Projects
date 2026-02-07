@@ -2,8 +2,8 @@ import os
 import sys
 from projects.src.utils.logger import logging
 from projects.src.utils.exception import CustomException
-from src.entity.config_entity import DataIngestionConfig
-from src.config.configuration import ConfiguartionManager
+from projects.src.entity.config_entity import DataIngestionConfig
+from projects.src.config.configuration import ConfiguartionManager
 from urllib.request import urlretrieve
 import zipfile
 

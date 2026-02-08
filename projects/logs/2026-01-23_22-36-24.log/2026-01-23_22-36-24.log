@@ -1,7 +1,0 @@
-[2026-01-23 22:36:28,315] INFO - Created directoriy at artifacts
-[2026-01-23 22:36:28,316] INFO - Created directoriy at artifacts/model_trainer
-[2026-01-23 22:36:28,414] INFO - Columns: Index(['bathrooms', 'floors', 'waterfront', 'view', 'condition', 'grade',
-       'yr_built', 'lat', 'long', 'log_price', 'is_renovated', 'log_bedrooms',
-       'log_sqft_living', 'log_sqft_lot', 'log_sqft_above',
-       'log_sqft_basement', 'log_sqft_living15', 'log_sqft_lot15'],
-      dtype='object')

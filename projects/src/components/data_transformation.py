@@ -113,6 +113,8 @@ class DataTransformation:
                 ("processor", processor)
             ]
         )
+        # scaler = StandardScaler()
+        # scaler.inverse_transform(y_pred)
 
         return full_pipeline
         

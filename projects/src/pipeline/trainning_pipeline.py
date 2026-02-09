@@ -118,7 +118,7 @@ class TrainingPipeline:
         
     def run_pipeline(self):
         try:
-            # self.run_data_ingestion()
+            self.run_data_ingestion()
             status = self.run_data_validation()
             if status:
                 self.run_data_transformation()
